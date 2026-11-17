@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KopiRight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+  /* Tata letak: satu kolom lebar 62rem, bagian bergantian antara teks dan kartu; aksen hijau teluk dengan sorot kuning gula aren. */
+  :root {
+    --bg: #f2f7f5;
+    --surface: #ffffff;
+    --fg: #14231f;
+    --muted: #51655e;
+    --line: #d3e0da;
+    --accent: #0f6b5b;
+    --accent-fg: #ffffff;
+    --sun: #f2b632;
+    --sun-fg: #3a2a00;
+    --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+    --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1815;
+      --surface: #15231f;
+      --fg: #e8f1ed;
+      --muted: #9db3ab;
+      --line: #26382f;
+      --accent: #4fd1b5;
+      --accent-fg: #06201a;
+      --sun: #f2b632;
+      --sun-fg: #3a2a00;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1815;
+    --surface: #15231f;
+    --fg: #e8f1ed;
+    --muted: #9db3ab;
+    --line: #26382f;
+    --accent: #4fd1b5;
+    --accent-fg: #06201a;
+    --sun: #f2b632;
+    --sun-fg: #3a2a00;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    padding-inline: 1rem;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { max-width: 62rem; margin-inline: auto; }
+
+  header.top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding-block: 1.25rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .brand svg {
+    vertical-align: middle;
+  }
+  .brand strong {
+    color: var(--accent);
+  }
+
+  nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+  nav a {
+    text-decoration: none;
+    font-weight: 500;
+    color: var(--muted);
+    padding-block: 0.25rem;
+  }
+  nav a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    padding-block: 2.5rem 3.5rem;
+  }
+  .hero > * { min-width: 0; }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+  h1 {
+    font-weight: 800;
+    font-size: clamp(2.2rem, 6.5vw, 3.9rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+  }
+  h1 mark {
+    background: linear-gradient(transparent 58%, var(--sun) 58%);
+    color: inherit;
+    padding-inline: 0.1em;
+  }
+  .lead { color: var(--muted); font-size: 1.15rem; max-width: 34rem; margin: 1.25rem 0 1.75rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 1.4rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid var(--accent);
+  }
+  .btn.primary { background: var(--accent); color: var(--accent-fg); }
+  .btn.ghost { color: var(--fg); border-color: var(--line); }
+  .btn:hover { filter: brightness(1.08); }
+
+  .today {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+  .today h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+  .today p { margin: 0; color: var(--muted); }
+  .today .big {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.1rem;
+    color: var(--fg);
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--sun);
+    color: var(--sun-fg);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+  }
+
+  section { padding-block: 3rem; border-top: 1px solid var(--line); }
+  .sec-head { margin-bottom: 1.75rem; max-width: 36rem; }
+  .sec-head h2 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); line-height: 1.1; letter-spacing: -0.015em; }
+  .sec-head p { color: var(--muted); margin: 0.6rem 0 0; }
+
+  .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 3rem;
+  }
+  .menu li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.15rem 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  .menu h3 { font-size: 1.1rem; font-weight: 600; }
+  .menu .price {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .menu p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.97rem; }
+
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1.5rem;
+  }
+  .reasons > div { min-width: 0; }
+  .reasons h3 { font-size: 1.15rem; margin-bottom: 0.4rem; }
+  .reasons p { margin: 0; color: var(--muted); }
+
+  .visit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.5rem;
+  }
+  .visit > div {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    min-width: 0;
+  }
+  .visit h3 { font-size: 1.15rem; margin-bottom: 0.75rem; }
+  .visit p { margin: 0 0 0.5rem; }
+  .visit table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .visit td { padding-block: 0.35rem; border-bottom: 1px solid var(--line); }
+  .visit td:last-child { text-align: right; font-weight: 700; }
+  .note { color: var(--muted); font-size: 0.9rem; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 1.75rem 2.5rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+  }
+  .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+  .footer-credits {
+    border-top: 1px dashed var(--line);
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    font-size: 0.88rem;
+  }
+  .footer-credits strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  @media (max-width: 44rem) {
+    .hero { grid-template-columns: 1fr; padding-block: 1.5rem 2.5rem; }
+    .menu { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#atas">
+      <!-- Logo SVG Baru (Format 1:1, Biru/Putih) -->
+      <svg viewBox="0 0 100 100" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25 40 H70 C75 40, 78 43, 78 48 V65 C78 74, 70 82, 60 82 H35 C25 82, 22 74, 22 65 V43 C22 41, 23 40, 25 40 Z" fill="#0f6b5b"/>
+        <path d="M78 48 H84 C90 48, 93 53, 93 58 C93 63, 90 68, 84 68 H78" fill="none" stroke="#0f6b5b" stroke-width="6" stroke-linecap="round"/>
+        <ellipse cx="50" cy="88" rx="35" ry="5" fill="#f2b632"/>
+        <path d="M40 28 C40 22, 45 20, 45 15 C45 20, 40 23, 40 28 Z" fill="#f2b632"/>
+        <path d="M55 25 C55 19, 60 17, 60 12 C60 17, 55 20, 55 25 Z" fill="#f2b632"/>
+        <circle cx="47" cy="61" r="10" fill="none" stroke="#ffffff" stroke-width="3"/>
+        <text x="43" y="68" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="14">C</text>
+      </svg>
+      <span>Kopi<strong>Right</strong></span>
+    </a>
+    <nav aria-label="Menu utama">
+      <a href="#menu">Menu</a>
+      <a href="#tentang">Tentang kami</a>
+      <a href="#kunjungi">Jam &amp; lokasi</a>
+    </nav>
+  </header>
+
+  <main id="atas">
+    <div class="hero">
+      <div>
+        <h1>Kopi hangat, <mark>harga bersahabat</mark>.</h1>
+        <p class="lead">Warung kopi di sudut jalan. Kopi diseduh saat dipesan, camilannya dibuat hari itu juga. Mampir sebentar atau duduk berlama-lama, sama-sama boleh.</p>
+        <div class="actions">
+          <a class="btn primary" href="#menu">Lihat menu</a>
+          <a class="btn ghost" href="#kunjungi">Cara ke sini</a>
+        </div>
+      </div>
+      <aside class="today" aria-label="Info singkat">
+        <span class="badge">Menu favorit</span>
+        <h2>Kopi Susu Gula Aren</h2>
+        <p class="big">Rp18.000</p>
+        <p>Espresso, susu segar, dan gula aren cair. Disajikan dingin atau panas.</p>
+      </aside>
+    </div>
+
+    <section id="menu">
+      <div class="sec-head">
+        <h2>Menu kami</h2>
+        <p>Pilihan sedikit, tapi semuanya enak. Harga sudah termasuk pajak.</p>
+      </div>
+      <ul class="menu">
+        <li>
+          <h3>Kopi Tubruk</h3><span class="price">Rp12.000</span>
+          <p>Bubuk kopi diseduh langsung di gelas. Ampasnya dibiarkan mengendap.</p>
+        </li>
+        <li>
+          <h3>Kopi Susu Gula Aren</h3><span class="price">Rp18.000</span>
+          <p>Manis yang pas, tidak bikin eneg.</p>
+        </li>
+        <li>
+          <h3>Es Teh Tarik</h3><span class="price">Rp10.000</span>
+          <p>Teh pekat ditarik sampai berbusa, lalu diberi es.</p>
+        </li>
+        <li>
+          <h3>Roti Bakar Cokelat Keju</h3><span class="price">Rp15.000</span>
+          <p>Roti tebal, cokelat leleh, keju parut di atasnya.</p>
+        </li>
+        <li>
+          <h3>Pisang Goreng</h3><span class="price">Rp12.000</span>
+          <p>Lima potong, digoreng renyah dan disajikan selagi panas.</p>
+        </li>
+        <li>
+          <h3>Mie Rebus Telur</h3><span class="price">Rp16.000</span>
+          <p>Kuah gurih dengan telur setengah matang dan sawi.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="tentang">
+      <div class="sec-head">
+        <h2>Kenapa pelanggan kembali lagi</h2>
+      </div>
+      <div class="reasons">
+        <div>
+          <h3>Biji kopi lokal</h3>
+          <p>Kami memakai biji dari petani di Jawa Barat dan menggilingnya setiap pagi.</p>
+        </div>
+        <div>
+          <h3>Tempat yang nyaman</h3>
+          <p>Ada colokan listrik di setiap meja dan Wi-Fi gratis untuk yang ingin bekerja.</p>
+        </div>
+        <div>
+          <h3>Harga jelas</h3>
+          <p>Tidak ada biaya tambahan. Harga di menu adalah harga yang Anda bayar.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kunjungi">
+      <div class="sec-head">
+        <h2>Jam buka dan lokasi</h2>
+      </div>
+      <div class="visit">
+        <div>
+          <h3>Jam buka (WIB)</h3>
+          <table>
+            <tbody>
+              <tr><td>Senin sampai Jumat</td><td>07.00 – 22.00</td></tr>
+              <tr><td>Sabtu dan Minggu</td><td>08.00 – 23.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Alamat dan kontak</h3>
+          <p>Jl. Melati No. 12, Bandung</p>
+          <p>WhatsApp: 0821-5088-1080</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-top">
+      <span class="footer-brand">
+        <svg viewBox="0 0 100 100" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 40 H70 C75 40, 78 43, 78 48 V65 C78 74, 70 82, 60 82 H35 C25 82, 22 74, 22 65 V43 C22 41, 23 40, 25 40 Z" fill="#0f6b5b"/>
+          <path d="M78 48 H84 C90 48, 93 53, 93 58 C93 63, 90 68, 84 68 H78" fill="none" stroke="#0f6b5b" stroke-width="6" stroke-linecap="round"/>
+          <ellipse cx="50" cy="88" rx="35" ry="5" fill="#f2b632"/>
+        </svg>
+        <span>KopiRight</span>
+      </span>
+      <span>Buka setiap hari, kecuali Idulfitri.</span>
+    </div>
+    <div class="footer-credits">
+      <span>Dibuat oleh: <strong>Muhammad Islami Pasha</strong> &amp; <strong>Ar-rahhim Recall Monarki</strong></span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
